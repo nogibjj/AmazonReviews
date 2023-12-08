@@ -4,7 +4,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn import metrics
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-
+import numpy as np
 
 
 def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=False):
@@ -47,6 +47,22 @@ def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=Fal
     # Train the Naive Bayes model
     clf = MultinomialNB().fit(X_train_counts, y_train)
 
+    # Get the log probabilities of each word
+    log_probabilities = clf.feature_log_prob_
+    probabilities = np.exp(log_probabilities)
+
+    # Get the feature names (words)
+    feature_names = vectorizer.get_feature_names_out()
+
+    # Create a DataFrame
+    df_probabilities = pd.DataFrame(probabilities.T, 
+                                    columns=['Negative', 'Positive'])
+    df_probabilities['Word'] = feature_names
+
+    df_log_probs = pd.DataFrame(log_probabilities.T, 
+                                columns=['Negative', 'Positive'])
+    df_log_probs['Word'] = feature_names
+
     # Transform the test data into a matrix of token counts
     X_test_counts = vectorizer.transform(X_test)
 
@@ -57,13 +73,15 @@ def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=Fal
     print("Feature Extraction: ", extractor)
     print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
 
+    return df_probabilities, df_log_probs
+
 
 if __name__  == '__main__':
     df = pd.read_csv('reviews_sample_stratified.csv')
     df = df[['reviewText', 'sentiment']]
     df = df.dropna()
 
-    naive_bayes_sentiment_analysis(df)
-    naive_bayes_sentiment_analysis(df, tfidf=True)
+    prob_1, p1_log = naive_bayes_sentiment_analysis(df)
+    prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
 
     print(21)
