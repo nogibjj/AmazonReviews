@@ -108,6 +108,27 @@ if __name__  == '__main__':
     # Preprocess the text
     # df['reviewText'] = df['reviewText'].apply(preprocess_text)
 
+    print("\nreal data")
+    prob_1, p1_log = naive_bayes_sentiment_analysis(df)
+    prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
+
+    print("\ngenerated data - token counts")
+    df = pd.read_csv('synthetic_prob_count.csv')
+    df = df[['reviewText', 'sentiment']]
+    df = df.dropna()
+    # Preprocess the text
+    # df['reviewText'] = df['reviewText'].apply(preprocess_text)
+
+    prob_1, p1_log = naive_bayes_sentiment_analysis(df)
+    prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
+
+    print("\ngenerated data - tfidf")
+    df = pd.read_csv('synthetic_tfidf.csv')
+    df = df[['reviewText', 'sentiment']]
+    df = df.dropna()
+    # Preprocess the text
+    # df['reviewText'] = df['reviewText'].apply(preprocess_text)
+
     prob_1, p1_log = naive_bayes_sentiment_analysis(df)
     prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
 
