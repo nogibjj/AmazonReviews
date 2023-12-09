@@ -1,3 +1,5 @@
+"""This script performs sentiment analysis using the Naive Bayes algorithm."""
+
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
@@ -14,6 +16,8 @@ nltk.download('stopwords')
 nltk.download('wordnet')
 
 def preprocess_text(text):
+    """Preprocess the text by removing punctuation, numbers, stopwords, and
+    lemmatizing the words."""
     # Lowercase the text
     text = text.lower()
     # Remove punctuation
@@ -33,6 +37,7 @@ def preprocess_text(text):
 
 
 def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=False):
+    """Perform sentiment analysis using the Naive Bayes algorithm."""
     # Ensure the necessary columns are present
     str_ = "DataFrame must contain 'reviewText' and 'sentiment' columns"
     assert 'reviewText' in df.columns and 'sentiment' in df.columns, str_
@@ -58,6 +63,7 @@ def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=Fal
     Both of these classes are used for feature extraction in text data preprocessing. 
     They convert text data into a form that can be used by machine learning 
     algorithms."""
+    
     if tfidf:
         # Convert the reviews into a matrix of TF-IDF features
         vectorizer = TfidfVectorizer()
