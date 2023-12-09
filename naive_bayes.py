@@ -36,7 +36,7 @@ def preprocess_text(text):
     return text
 
 
-def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=False):
+def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=22, tfidf=False):
     """Perform sentiment analysis using the Naive Bayes algorithm."""
     # Ensure the necessary columns are present
     str_ = "DataFrame must contain 'reviewText' and 'sentiment' columns"
@@ -101,8 +101,14 @@ def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=Fal
     y_pred = clf.predict(X_test_counts)
 
     # Print the accuracy of the model
-    print("Feature Extraction: ", extractor)
-    print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
+    print(f"\n{'-'*40}")
+    print(f"Feature Extraction Method: {extractor}")
+    print(f"{'-'*40}")
+    print(f"Accuracy: {metrics.accuracy_score(y_test, y_pred):.2f}")
+    print(f"Precision: {metrics.precision_score(y_test, y_pred, average='weighted'):.2f}")
+    print(f"Recall: {metrics.recall_score(y_test, y_pred, average='weighted'):.2f}")
+    print(f"F1 Score: {metrics.f1_score(y_test, y_pred, average='weighted'):.2f}")
+    print(f"{'-'*40}\n")
 
     return df_probabilities, df_log_probs
 
