@@ -1,3 +1,5 @@
+"""This script performs sentiment analysis using the Naive Bayes algorithm."""
+
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
@@ -5,9 +7,37 @@ from sklearn import metrics
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+import re
+import nltk
+
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+def preprocess_text(text):
+    """Preprocess the text by removing punctuation, numbers, stopwords, and
+    lemmatizing the words."""
+    # Lowercase the text
+    text = text.lower()
+    # Remove punctuation
+    text = re.sub(r'[^\w\s]', '', text)
+    # Remove numbers
+    text = re.sub(r'\d+', '', text)
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    words = text.split()
+    words = [word for word in words if word not in stop_words]
+    # Lemmatize the words
+    lemmatizer = WordNetLemmatizer()
+    words = [lemmatizer.lemmatize(word) for word in words]
+    # Join the words back into a single string
+    text = ' '.join(words)
+    return text
 
 
 def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=False):
+    """Perform sentiment analysis using the Naive Bayes algorithm."""
     # Ensure the necessary columns are present
     str_ = "DataFrame must contain 'reviewText' and 'sentiment' columns"
     assert 'reviewText' in df.columns and 'sentiment' in df.columns, str_
@@ -33,6 +63,7 @@ def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=Fal
     Both of these classes are used for feature extraction in text data preprocessing. 
     They convert text data into a form that can be used by machine learning 
     algorithms."""
+    
     if tfidf:
         # Convert the reviews into a matrix of TF-IDF features
         vectorizer = TfidfVectorizer()
@@ -80,6 +111,29 @@ if __name__  == '__main__':
     df = pd.read_csv('reviews_sample_stratified.csv')
     df = df[['reviewText', 'sentiment']]
     df = df.dropna()
+    # Preprocess the text
+    # df['reviewText'] = df['reviewText'].apply(preprocess_text)
+
+    print("\nreal data")
+    prob_1, p1_log = naive_bayes_sentiment_analysis(df)
+    prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
+
+    print("\ngenerated data - token counts")
+    df = pd.read_csv('synthetic_prob_count.csv')
+    df = df[['reviewText', 'sentiment']]
+    df = df.dropna()
+    # Preprocess the text
+    # df['reviewText'] = df['reviewText'].apply(preprocess_text)
+
+    prob_1, p1_log = naive_bayes_sentiment_analysis(df)
+    prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
+
+    print("\ngenerated data - tfidf")
+    df = pd.read_csv('synthetic_tfidf.csv')
+    df = df[['reviewText', 'sentiment']]
+    df = df.dropna()
+    # Preprocess the text
+    # df['reviewText'] = df['reviewText'].apply(preprocess_text)
 
     prob_1, p1_log = naive_bayes_sentiment_analysis(df)
     prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
