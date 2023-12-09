@@ -12,7 +12,7 @@ print (probs)
 
 #save the reviews_sample_stratified file in a dataframe
 
-reviews = pd.read_csv('reviews_sample_stratified.csv', sep=',')
+reviews = pd.read_csv('reviews_sample_stratified_preprocessed.csv', sep=',')
 
 print (reviews)
 
