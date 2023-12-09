@@ -63,7 +63,7 @@ def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=Fal
     Both of these classes are used for feature extraction in text data preprocessing. 
     They convert text data into a form that can be used by machine learning 
     algorithms."""
-    
+
     if tfidf:
         # Convert the reviews into a matrix of TF-IDF features
         vectorizer = TfidfVectorizer()
@@ -108,23 +108,30 @@ def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=Fal
 
 
 if __name__  == '__main__':
+    print("\nReal Data - Raw")
     df = pd.read_csv('reviews_sample_stratified.csv')
     df = df[['reviewText', 'sentiment']]
     df = df.dropna()
     # Preprocess the text
     # df['reviewText'] = df['reviewText'].apply(preprocess_text)
-
-    print("\nreal data")
     prob_1, p1_log = naive_bayes_sentiment_analysis(df)
     prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
 
-    print("\ngenerated data - token counts")
+    print("\nReal Data - Preprocessed")
+    df = pd.read_csv('reviews_sample_stratified_preprocessed.csv')
+    df = df[['reviewText', 'sentiment']]
+    df = df.dropna()
+    # Preprocess the text
+    # df['reviewText'] = df['reviewText'].apply(preprocess_text)
+    prob_1, p1_log = naive_bayes_sentiment_analysis(df)
+    prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
+
+    print("\nGenerated data - token counts")
     df = pd.read_csv('synthetic_prob_count.csv')
     df = df[['reviewText', 'sentiment']]
     df = df.dropna()
     # Preprocess the text
     # df['reviewText'] = df['reviewText'].apply(preprocess_text)
-
     prob_1, p1_log = naive_bayes_sentiment_analysis(df)
     prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
 
@@ -134,7 +141,6 @@ if __name__  == '__main__':
     df = df.dropna()
     # Preprocess the text
     # df['reviewText'] = df['reviewText'].apply(preprocess_text)
-
     prob_1, p1_log = naive_bayes_sentiment_analysis(df)
     prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
 
