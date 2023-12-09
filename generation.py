@@ -40,12 +40,18 @@ for index, row in reviews.iterrows():
     #add the synthetic review to the dataframe
     reviews.loc[index, 'synthetic_review'] = synthetic_review
 
-print (reviews)
+
+#just keep the columns we need (reviewText, sentiment, synthetic_review)
+
+reviews = reviews[['sentiment', 'synthetic_review']]
+
+#change the name of the column synthetic_review to reviewText
+
+reviews = reviews.rename(columns={'synthetic_review': 'reviewText'})
 
 #save the reviews dataframe to a csv file
 
 reviews.to_csv('synthetic_prob_count.csv')
-
 
 ######### Generate Synthetic Reviews from tfidf model #########
 probs_tfdf = pd.read_csv('tfidf_model_probabilities.csv', sep=',')
@@ -65,5 +71,14 @@ for index, row in reviews.iterrows():
     
     #add the synthetic review to the dataframe
     reviews.loc[index, 'synthetic_review_tfidf'] = synthetic_review
+
+
+#just keep the columns we need (reviewText, sentiment, synthetic_review_tfidf)
+
+reviews = reviews[['sentiment', 'synthetic_review_tfidf']]
+
+#change the name of the column synthetic_review_tfidf to reviewText
+
+reviews = reviews.rename(columns={'synthetic_review_tfidf': 'reviewText'})
 
 reviews.to_csv('synthetic_tfidf.csv')
