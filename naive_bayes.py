@@ -5,6 +5,31 @@ from sklearn import metrics
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+import re
+import nltk
+
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+def preprocess_text(text):
+    # Lowercase the text
+    text = text.lower()
+    # Remove punctuation
+    text = re.sub(r'[^\w\s]', '', text)
+    # Remove numbers
+    text = re.sub(r'\d+', '', text)
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    words = text.split()
+    words = [word for word in words if word not in stop_words]
+    # Lemmatize the words
+    lemmatizer = WordNetLemmatizer()
+    words = [lemmatizer.lemmatize(word) for word in words]
+    # Join the words back into a single string
+    text = ' '.join(words)
+    return text
 
 
 def naive_bayes_sentiment_analysis(df, test_size=0.2, random_state=42, tfidf=False):
@@ -80,6 +105,8 @@ if __name__  == '__main__':
     df = pd.read_csv('reviews_sample_stratified.csv')
     df = df[['reviewText', 'sentiment']]
     df = df.dropna()
+    # Preprocess the text
+    # df['reviewText'] = df['reviewText'].apply(preprocess_text)
 
     prob_1, p1_log = naive_bayes_sentiment_analysis(df)
     prob_2, p2_log = naive_bayes_sentiment_analysis(df, tfidf=True)
