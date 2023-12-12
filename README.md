@@ -22,10 +22,10 @@ The Naive Bayes model's performed better on synthetic data compared to real data
 
 The BERT model performed better on real data compared to synthetic data. This difference in performance stems from the inherent ability of discriminative models in capturing the intricate patterns and subtle nuances present in authentic customer reviews, allowing them to navigate the complexities in genuine sentiments. In contrast, synthetic data lacks the richness and variability found in real-world scenarios, making it challenging to accurately replicate and interpret the intricate features of actual customer sentiments. The bidirectional attention mechanism, unique to the BERT model, enables it to analyze the entire context of a word by considering its relationship with all other words in the sequence. In this way, it is able to capture complex dependencies and contextual relationships within a sentence or document to extract meaningful insights from the intricacies of real customer feedback, thus contributing to its effectiveness in this context.
 
-**Real Data (Accuracy)** | **Synthetic Data (Accuracy)**
---- | ---
-Generative Model (Naive Bayes) 83.82% | 87.85%
-Discriminative Model (BERT) 92.40% | 89.28%
+**Model** | **Real Data (Accuracy)** | **Synthetic Data (Accuracy)**
+--- | --- | ---
+Generative Model (Naive Bayes) | 83.82% | 87.85%
+Discriminative Model (BERT) | 92.40% | 89.28%
 
 ### Future Work
 
